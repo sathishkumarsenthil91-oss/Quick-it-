@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="260dp"
+    android:height="80dp"
+    android:viewportWidth="260"
+    android:viewportHeight="80">
+
+    <!-- Speed Dot on far left -->
+    <path
+        android:pathData="M16,40 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0"
+        android:fillColor="#00E5FF" />
+
+    <!-- Top speed trail -->
+    <path
+        android:pathData="M26,30 L45,30 C47.2,30 47.2,34 45,34 L26,34 C23.8,34 23.8,30 26,30 Z"
+        android:fillColor="#00D2FF" />
+
+    <!-- Middle speed trail -->
+    <path
+        android:pathData="M22,38 L42,38 C44.2,38 44.2,42 42,42 L22,42 C19.8,42 19.8,38 22,38 Z"
+        android:fillColor="#00A8E8" />
+
+    <!-- Bottom speed trail -->
+    <path
+        android:pathData="M27,46 L43,46 C45.2,46 45.2,50 43,50 L27,50 C24.8,50 24.8,46 27,46 Z"
+        android:fillColor="#0077B6" />
+
+    <!-- Aerodynamic Speeding Q Body with Gradient -->
+    <path
+        android:pathData="M65,18 C47.5,18 33.5,32 33.5,49.5 C33.5,67 47.5,81 65,81 C72.8,81 80,78.2 85.5,73.5 L94.2,81.8 C95.8,83.4 98.4,83.4 100,81.8 C101.6,80.2 101.6,77.6 100,76 L91.2,67.6 C94.5,62.4 96.5,56.2 96.5,49.5 C96.5,32 82.5,18 65,18 Z M65,30 C75.8,30 84.5,38.7 84.5,49.5 C84.5,60.3 75.8,69 65,69 C54.2,69 45.5,60.3 45.5,49.5 C45.5,38.7 54.2,30 65,30 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="33"
+                android:startY="18"
+                android:endX="101"
+                android:endY="82"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#00D2FF" />
+                <item android:offset="0.35" android:color="#0099FF" />
+                <item android:offset="0.75" android:color="#0066FF" />
+                <item android:offset="1.0" android:color="#0044EE" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Q Inner Kick Tail -->
+    <path
+        android:pathData="M63.5,56.5 L84,77 L73,77 L56.5,60.5 Z"
+        android:fillColor="#00E5FF" />
+
+    <!-- Letter 'u' in dark charcoal #2A2C3D -->
+    <path
+        android:pathData="M106,38 L114,38 L114,57 C114,60.5 116.5,62.5 120,62.5 C123.5,62.5 126,60.5 126,57 L126,38 L134,38 L134,57 C134,65.5 128.5,69.5 120,69.5 C111.5,69.5 106,65.5 106,57 Z"
+        android:fillColor="#2B2F3E" />
+
+    <!-- Letter 'i' in dark charcoal -->
+    <path
+        android:pathData="M141,31 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0"
+        android:fillColor="#2B2F3E" />
+    <path
+        android:pathData="M141,38 L149,38 L149,69 L141,69 Z"
+        android:fillColor="#2B2F3E" />
+
+    <!-- Letter 'c' in dark charcoal -->
+    <path
+        android:pathData="M174,44 C172,40 168,37.5 163,37.5 C154.5,37.5 149,43.5 149,53.5 C149,63.5 154.5,69.5 163,69.5 C168,69.5 172,67 174,63 L168,59 C166.5,61.5 164.5,62.5 163,62.5 C158.5,62.5 156.5,58.5 156.5,53.5 C156.5,48.5 158.5,44.5 163,44.5 C164.5,44.5 166.5,45.5 168,48 Z"
+        android:fillColor="#2B2F3E" />
+
+    <!-- Letter 'k' in dark charcoal -->
+    <path
+        android:pathData="M178,22 L185.5,22 L185.5,69 L178,69 Z"
+        android:fillColor="#2B2F3E" />
+    <path
+        android:pathData="M198,38 L188,52 L199,69 L190,69 L182,56.5 L182,50 L189,41 Z"
+        android:fillColor="#2B2F3E" />
+
+    <!-- 'it' letters in gradient Cyan / Vivid Blue -->
+    <!-- 'i' dot cyan -->
+    <path
+        android:pathData="M211,31 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0"
+        android:fillColor="#00D2FF" />
+
+    <!-- 'i' body in cyan/blue -->
+    <path
+        android:pathData="M211,38 L219,38 L219,69 L211,69 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="211"
+                android:startY="38"
+                android:endX="219"
+                android:endY="69"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#00D2FF" />
+                <item android:offset="1.0" android:color="#0077B6" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- 't' in cyan/blue -->
+    <path
+        android:pathData="M225,43 L230,43 L230,32 L237.5,32 L237.5,43 L245,43 L245,49 L237.5,49 L237.5,61 C237.5,63.5 239,64.5 241.5,64.5 C243,64.5 244.5,64 245.5,63.5 L245.5,69 C244,69.5 241.5,70 239,70 C233,70 230,66.5 230,60 L230,49 L225,49 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="225"
+                android:startY="32"
+                android:endX="245"
+                android:endY="70"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#00D2FF" />
+                <item android:offset="1.0" android:color="#0066FF" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>

@@ -1,0 +1,6 @@
+{
+  "name": "Quick it",
+  "description": "Personal AI Digital Hub & Cloud Storage platform with 3D Clay and Liquid Glass design",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
