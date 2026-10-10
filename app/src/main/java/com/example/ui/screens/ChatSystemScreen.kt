@@ -2,6 +2,7 @@ package com.example.ui.screens
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -78,7 +79,8 @@ fun ChatSystemScreen(
     onToggleCallMute: () -> Unit,
     onToggleCallSpeaker: () -> Unit,
     onCreateConversation: (name: String, isGroup: Boolean, friendUserId: String?) -> ConversationItem,
-    onCopyId: (String) -> Unit
+    onCopyId: (String) -> Unit,
+    onBack: () -> Unit
 ) {
     var activeConversation by remember { mutableStateOf<ConversationItem?>(null) }
     var selectedTabFilter by remember { mutableStateOf("All") } // All, Unread, Groups, Pinned, Archived
@@ -86,6 +88,17 @@ fun ChatSystemScreen(
     var showNewChatDialog by remember { mutableStateOf(false) }
     var showCreateGroupDialog by remember { mutableStateOf(false) }
     var showCameraView by remember { mutableStateOf(false) }
+
+    // Android Back first closes the topmost chat layer instead of leaving Chats.
+    BackHandler(enabled = showCameraView || showNewChatDialog ||
+        showCreateGroupDialog || activeConversation != null) {
+        when {
+            showCameraView -> showCameraView = false
+            showNewChatDialog -> showNewChatDialog = false
+            showCreateGroupDialog -> showCreateGroupDialog = false
+            activeConversation != null -> activeConversation = null
+        }
+    }
 
     ClayBackground {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -138,6 +151,7 @@ fun ChatSystemScreen(
                     onSelectTab = { selectedTabFilter = it },
                     searchQuery = chatSearchQuery,
                     onSearchQueryChanged = { chatSearchQuery = it },
+                    onBack = onBack,
                     onOpenConversation = { activeConversation = it },
                     onNewChatClick = { showNewChatDialog = true },
                     onCreateGroupClick = { showCreateGroupDialog = true },
@@ -231,6 +245,7 @@ private fun ChatHomeView(
     onSelectTab: (String) -> Unit,
     searchQuery: String,
     onSearchQueryChanged: (String) -> Unit,
+    onBack: () -> Unit,
     onOpenConversation: (ConversationItem) -> Unit,
     onNewChatClick: () -> Unit,
     onCreateGroupClick: () -> Unit,
@@ -270,7 +285,7 @@ private fun ChatHomeView(
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalAlignment = Alignment.End,
-                modifier = Modifier.padding(bottom = 85.dp) // Leave clearance for bottom nav
+                modifier = Modifier.padding(bottom = 16.dp) // Bottom navigation is hidden in Chats
             ) {
                 // Secondary FAB: Create Group
                 SmallFloatingActionButton(
@@ -306,10 +321,23 @@ private fun ChatHomeView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
+                IconButton(
+                    onClick = onBack,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(Color.White.copy(alpha = 0.85f))
+                ) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back to previous screen",
+                        tint = DeepViolet
+                    )
+                }
+                Column(modifier = Modifier.weight(1f)) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -337,7 +365,9 @@ private fun ChatHomeView(
                     Text(
                         text = "Real-time encrypted messaging & calling",
                         fontSize = 12.sp,
-                        color = TextSecondary
+                        color = TextSecondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
@@ -408,7 +438,7 @@ private fun ChatHomeView(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(bottom = 120.dp),
+                        .padding(bottom = 24.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Column(
@@ -422,7 +452,7 @@ private fun ChatHomeView(
                 }
             } else {
                 LazyColumn(
-                    contentPadding = PaddingValues(start = 20.dp, top = 8.dp, end = 20.dp, bottom = 130.dp),
+                    contentPadding = PaddingValues(start = 20.dp, top = 8.dp, end = 20.dp, bottom = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     modifier = Modifier.fillMaxSize()
                 ) {
