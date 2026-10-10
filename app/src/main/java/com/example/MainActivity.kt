@@ -6,6 +6,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -97,8 +98,32 @@ fun QuickItApp(viewModel: HubViewModel) {
     ClayBackground {
         Box(modifier = Modifier.fillMaxSize()) {
             // Main Screen Content (full-screen so grids and lists extend behind floating bottom nav)
-            Box(modifier = Modifier.fillMaxSize()) {
-                when (currentScreen) {
+            AnimatedContent(
+                targetState = currentScreen,
+                modifier = Modifier.fillMaxSize(),
+                transitionSpec = {
+                    when {
+                        targetState == AppScreen.GROUPS || targetState == AppScreen.AI_ASSISTANT ->
+                            (slideInHorizontally(initialOffsetX = { it / 4 }, animationSpec = tween(280)) +
+                                fadeIn(animationSpec = tween(240)))
+                                .togetherWith(
+                                    slideOutHorizontally(targetOffsetX = { -it / 8 }, animationSpec = tween(220)) +
+                                        fadeOut(animationSpec = tween(180))
+                                )
+                        initialState == AppScreen.GROUPS || initialState == AppScreen.AI_ASSISTANT ->
+                            (slideInHorizontally(initialOffsetX = { -it / 5 }, animationSpec = tween(280)) +
+                                fadeIn(animationSpec = tween(240)))
+                                .togetherWith(
+                                    slideOutHorizontally(targetOffsetX = { it / 4 }, animationSpec = tween(220)) +
+                                        fadeOut(animationSpec = tween(180))
+                                )
+                        else -> fadeIn(animationSpec = tween(160))
+                            .togetherWith(fadeOut(animationSpec = tween(120)))
+                    }.apply { targetContentZIndex = 1f }
+                },
+                label = "Quick It screen transition"
+            ) { screen ->
+                when (screen) {
                     AppScreen.SPLASH -> {
                         SplashScreen(
                             onSplashFinished = { viewModel.navigateTo(AppScreen.DASHBOARD) }
@@ -228,7 +253,8 @@ fun QuickItApp(viewModel: HubViewModel) {
                         onToggleCallMute = { viewModel.toggleCallMute() },
                         onToggleCallSpeaker = { viewModel.toggleCallSpeaker() },
                         onCreateConversation = { name, isGroup, friendId -> viewModel.createConversation(name, isGroup, friendId) },
-                        onCopyId = { id -> viewModel.showToast("Copied ID: $id") }
+                        onCopyId = { id -> viewModel.showToast("Copied ID: $id") },
+                        onBack = { viewModel.navigateBack() }
                     )
                 }
 
@@ -292,24 +318,27 @@ fun QuickItApp(viewModel: HubViewModel) {
             }
         }
 
-        // Floating Pill Bottom Navigation Bar overlaid directly on top of app content
-        val showBottomNav = currentScreen in listOf(
-            AppScreen.DASHBOARD,
-            AppScreen.STORAGE,
-            AppScreen.AI_ASSISTANT,
-            AppScreen.GROUPS
-        )
-        if (showBottomNav) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                QuickItBottomNav(
-                    currentScreen = currentScreen,
-                    onNavigate = { viewModel.navigateTo(it) },
-                    onOpenSmartSave = { viewModel.openSmartSave() }
-                )
-            }
+        // Keep navigation on primary tabs, but never overlay immersive chats, AI,
+        // modal sheets, file previews, or the on-screen keyboard.
+        val showBottomNav = (currentScreen == AppScreen.DASHBOARD ||
+            currentScreen == AppScreen.STORAGE) &&
+            !showSmartSaveSheet &&
+            selectedFileDetail == null &&
+            !WindowInsets.isImeVisible
+
+        AnimatedVisibility(
+            visible = showBottomNav,
+            modifier = Modifier.align(Alignment.BottomCenter),
+            enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(280)) +
+                fadeIn(animationSpec = tween(220)),
+            exit = slideOutVertically(targetOffsetY = { it }, animationSpec = tween(180)) +
+                fadeOut(animationSpec = tween(140))
+        ) {
+            QuickItBottomNav(
+                currentScreen = currentScreen,
+                onNavigate = { viewModel.navigateTo(it) },
+                onOpenSmartSave = { viewModel.openSmartSave() }
+            )
         }
 
         // Snackbar feedback overlay
